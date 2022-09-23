@@ -12,7 +12,7 @@ app.get("/ping", (_, res) => {
   res.json({ status: "ok" });
 });
 
-const errorHandler = (err, _, res) => {
+const errorHandler = (err, req, res, next) => {
   console.log(`error ${err.message}`);
   const status = err.status || 400;
   res.status(status).json({ error: err.message });
