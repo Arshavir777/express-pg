@@ -1,6 +1,7 @@
+import cors from "cors";
 import express from "express";
 import indexRouter from "./routes";
-import cors from "cors";
+import { errorHandler } from "./middlewares";
 
 var app = express();
 
@@ -12,11 +13,6 @@ app.get("/ping", (_, res) => {
   res.json({ status: "ok" });
 });
 
-const errorHandler = (err, req, res, next) => {
-  console.log(`error ${err.message}`);
-  const status = err.status || 400;
-  res.status(status).json({ error: err.message });
-};
 app.use(errorHandler);
 
 export default app;

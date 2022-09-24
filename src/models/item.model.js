@@ -1,16 +1,22 @@
+import { DB_CONDITIONS } from "../constants/db";
 import db from "../db";
+export const FIELDS = ["id", "name", "email"];
 
 const findAndCountAll = async ({ limit, offset, filter, sort }) => {
   let orderQuery = "";
   let whereQuery = "";
 
   if (filter) {
-    const { field, condition, value } = filter;
-    whereQuery += `WHERE "${field}"${condition}'${value}'`;
+    let { field, condition, value } = filter;
+    if (condition === DB_CONDITIONS.CONTAIN) {
+      whereQuery += `WHERE "${field}" like '%${value}%'`;
+    } else {
+      whereQuery += `WHERE "${field}"${condition}'${value}'`;
+    }
   }
 
   if (sort) {
-    const { field, order } = sort;
+    const [field, order] = Object.entries(sort)[0];
     orderQuery += `ORDER BY "${field}" ${order}`;
   }
 
