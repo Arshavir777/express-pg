@@ -1,19 +1,11 @@
 import express from "express";
 import { itemController } from "../controllers";
 import { validator } from "../middlewares";
-import schemas from "../schemas";
+import { itemList, itemStore } from "../validators";
 
 const itemRouter = express.Router();
 
-itemRouter.get(
-  "/",
-  validator(schemas.itemList, "query"),
-  itemController.getAll
-);
-itemRouter.post(
-  "/",
-  validator(schemas.itemStore, "body"),
-  itemController.store
-);
+itemRouter.get("/", validator(itemList, "query"), itemController.getAll);
+itemRouter.post("/", validator(itemStore, "body"), itemController.store);
 
 export default itemRouter;

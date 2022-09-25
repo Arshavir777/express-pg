@@ -1,6 +1,6 @@
-import { DB_CONDITIONS } from "../constants/db";
 import db from "../db";
-export const FIELDS = ["id", "name", "email"];
+import { DB_CONDITIONS } from "../constants/db";
+const FIELDS = ["title", "quantity", "distance", "date"];
 
 const findAndCountAll = async ({ limit, offset, filter, sort }) => {
   let orderQuery = "";
@@ -8,8 +8,8 @@ const findAndCountAll = async ({ limit, offset, filter, sort }) => {
 
   if (filter) {
     let { field, condition, value } = filter;
-    if (condition === DB_CONDITIONS.CONTAIN) {
-      whereQuery += `WHERE "${field}" like '%${value}%'`;
+    if (condition === DB_CONDITIONS.CONTAINS) {
+      whereQuery += `WHERE "${field}" LIKE '%${value}%'`;
     } else {
       whereQuery += `WHERE "${field}"${condition}'${value}'`;
     }
@@ -34,11 +34,11 @@ const findAndCountAll = async ({ limit, offset, filter, sort }) => {
 
 const insert = async (data) => {
   const { rows } = await db.query(
-    "INSERT INTO items(name, email) VALUES($1, $2) RETURNING *",
-    [data.name, data.email]
+    "INSERT INTO items(title, quantity, distance, date) VALUES($1::text, $2::int, $3::int, $4::date) RETURNING *",
+    [data.title, data.quantity, data.distance, data.date]
   );
 
   return rows[0];
 };
 
-export { findAndCountAll, insert };
+export { FIELDS, findAndCountAll, insert };

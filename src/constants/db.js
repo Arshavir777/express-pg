@@ -6,5 +6,5 @@ export const DB_CONDITIONS = {
   EQ: "=",
   GT: ">",
   LT: "<",
-  CONTAIN: "contain",
+  CONTAINS: "contains",
 };
